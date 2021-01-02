@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :blogs, only: [
+  resources :posts, only: [
     :show
   ]
 end

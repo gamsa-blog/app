@@ -1,6 +1,6 @@
-class AddBlogTable < ActiveRecord::Migration[6.0]
+class AddPostsTable < ActiveRecord::Migration[6.0]
   def change
-    create_table "post", force: :cascade do |t|
+    create_table "posts", force: :cascade do |t|
       t.string "title"
       t.string "content"
       t.integer "created_at", null: false
