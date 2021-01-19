@@ -1,12 +1,18 @@
 FROM ruby:2.6.5
-WORKDIR /blog
-COPY Gemfile /blog/Gemfile
-COPY Gemfile.lock /blog/Gemfile.lock
-RUN gem install bundler:2.1.1
+
+RUN curl https://deb.nodesource.com/setup_12.x | bash
+RUN curl https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
+RUN apt-get update && apt-get install -y nodejs yarn postgresql-client
+
+RUN mkdir /app
+WORKDIR /app
+COPY Gemfile Gemfile.lock ./
+RUN gem install bundler
 RUN bundle install
-COPY . /blog
+COPY . .
 
-EXPOSE 3000
+RUN rake assets:precompile
 
-# Start the main process.
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD rails s -b 0.0.0.0
